@@ -48,11 +48,15 @@ def find_server():
                 server = tmp[1][::-1]
                 group = tmp[0][::-1]
 
+			# overwrite "server"
+            server = 'https://github.com/pulp-platform'
+
             return [server, group, remote]
 
     print tcolors.ERROR + "ERROR: could not find remote server." + tcolors.ENDC
     sys.exit(1)
 
+#--- Main
 if len(sys.argv) > 1:
     server = sys.argv[1]
     group  = "pulp-project"
@@ -64,12 +68,10 @@ if len(sys.argv) > 1:
 if not vars().has_key('server'):
     [server, group, remote] = find_server()
 
-print "server: " + server
-print "remove: " + remote
-sys.exit(1)
+# overwrite "remove"
+remote = 'https://github.com/pulp-platform'
 
 print "Using remote git server %s, remote is %s" % (server, remote)
-
 
 # download IPApproX tools in ./ipstools and import them
 if os.path.exists("ipstools") and os.path.isdir("ipstools"):
@@ -81,11 +83,11 @@ if os.path.exists("ipstools") and os.path.isdir("ipstools"):
 else:
     # try to find the ipstools repository
     if "http" in remote:
-        if execute("git clone %s/IPApproX.git ipstools" % (remote)) != 0:
-            execute("git clone %s/pulp-tools/IPApproX.git ipstools" % (server))
+        if execute("git clone %s/pulp-platform/IPApproX.git ipstools" % (remote)) != 0:
+            execute("git clone %s/pulp-platform/IPApproX.git ipstools" % (server))
     else:
-        if execute("git clone %s/IPApproX.git ipstools" % (remote)) != 0:
-            execute("git clone %s:pulp-tools/IPApproX.git ipstools" % (server))
+        if execute("git clone %s/pulp-platform/IPApproX.git ipstools" % (remote)) != 0:
+            execute("git clone %s/pulp-platform/IPApproX.git ipstools" % (server))
 
     import ipstools
 
